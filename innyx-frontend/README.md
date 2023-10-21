@@ -1,4 +1,4 @@
-# src
+# innyx-frontend
 
 ## Project setup
 ```
