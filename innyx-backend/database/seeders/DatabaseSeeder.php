@@ -1,7 +1,8 @@
 <?php
 
 namespace Database\Seeders;
-
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -12,11 +13,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+	 \App\Models\User::factory()->create([
+            'name' => 'Administrador',
+            'email' => 'admin@innyx.com.br',
+            'password' => Hash::make('admin'),
+        ]);
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        \App\Models\Categoria::factory(10)->create();
+        \App\Models\Produto::factory(30)->create();
+
     }
 }
