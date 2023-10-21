@@ -1,9 +1,42 @@
-<template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-purple justify-content-center">
-      <a class="navbar-brand" href="#" style="font-family: 'Arial', sans-serif; font-size:60px;">Innyx</a>
-  </nav>
-  <router-view id="content" />
+<template> 
+<div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-purple justify-content-center">
+      <a class="navbar-brand" href="/" style="font-family: 'Arial', sans-serif; font-size:60px;">Innyx</a>
+    </nav>
+    <div v-if="hastoken">
+      <sidebar @button-exit-clicked="logout" @menuClicked="handleMenuClick" />
+      <router-view />
+    </div>
+    <router-view v-else />
+</div>
 </template>
+
+<script>
+import Sidebar from "@/components/SideBar.vue";
+
+export default {
+  name: "App",
+  components: {
+    Sidebar,
+  },
+  data() {
+    return {
+      hastoken: localStorage.getItem("token"), // Check if token exists in localStorage
+    };
+  },
+  methods: {
+    logout() {
+      localStorage.removeItem("token");
+      this.hastoken = null; // Set hastoken to null after logout
+      window.location.reload();
+    },
+    handleMenuClick(event){
+      this.$router.push({ name: event });
+    }
+  },
+};
+</script>
+
 
 <style>
 /* CUSTOM STYLE */
