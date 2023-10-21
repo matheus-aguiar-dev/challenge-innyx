@@ -47,6 +47,7 @@
               v-else
               @click.stop.prevent="$emit('menuClicked', menuItem.link)"
               :href="menuItem.link"
+	      style="background: #330063;"
             >
               <i
                 class="bx"
@@ -263,19 +264,10 @@
   }
 </script>
 
-<style>
+<style scoped>
   /* Google Font Link */
   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
   @import url('https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css');
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-  }
-  body {
-    transition: all 0.5s ease;
-  }
   .name_job {
     margin-bottom: 5px;
   }
@@ -284,7 +276,7 @@
     margin: 0 10px 0 10px;
   }
   .sidebar {
-    position: relative;
+    position: absolute;
     display: flex;
     flex-direction: column;
     position: fixed;
@@ -294,7 +286,7 @@
     min-height: min-content;
     /* overflow-y: auto; */
     width: 78px;
-    background: var(--bg-color);
+    background: #540094;
     /* padding: 6px 14px 0 14px; */
     z-index: 99;
     transition: all 0.5s ease;
@@ -526,15 +518,17 @@
     top: 50%;
     right: 0;
     transform: translateY(-50%);
-    background: var(--secondary-color);
     width: 100%;
     height: 60px;
     line-height: 60px;
     border-radius: 0px;
     transition: all 0.5s ease;
   }
+  #log_out{
+    background:  #330063;
+  }
   .sidebar.open .profile #log_out {
-    background: var(--secondary-color);
+    background:  #330063;
     opacity: 1;
 
   }
@@ -555,7 +549,6 @@
     top: 0;
     left: 78px;
     width: calc(100% - 78px);
-    transition: all 0.5s ease;
     z-index: 2;
   }
   .sidebar.open ~ .home-section {

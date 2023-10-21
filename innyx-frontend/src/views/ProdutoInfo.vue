@@ -5,30 +5,28 @@
     </div>
     <div v-else>
       <div class="row">
-        <div class="col-md-4" v-for="product in products" :key="product.id">
-          <!-- Your product card layout here -->
+        <div class="col-md-4">
           <div class="card mb-4">
             <img :src="product.imagem" class="card-img-top">
             <div class="card-body">
-              <h5 class="card-title">{{ product.nome }}</h5>
-              <p class="card-text">{{ product.descricao }}</p>
-              <p class="card-text">Price: {{ product.preco }}</p>
+              <h5 class="card-title">{{ product.nome}}</h5>
+              <p class="card-text">id: {{ product.id }}</p>
+              <p class="card-text">descrição: {{ product.descricao }}</p>
+              <p class="card-text">:preço {{ product.preco }}</p>
+              <p class="card-text">:data de validade:: {{ product.data_validade }}</p>
+              <p class="card-text">categoria: {{ product.categoria_id}}</p>
               <!-- Add more product details as needed -->
 	      <div class="text-center">
-	      <router-link :to="{ name: 'produto', params: { index: product.id } }">
 		  <button class="btn btn-purple mb-2">Visualizar</button>
-	      </router-link>
-	      <router-link :to="{ name: 'produto', params: { index: product.id } }">
 		  <button class="btn mx-5 btn-blue mb-2">Editar</button>
-	      </router-link>
 		  <button class="btn btn-red mb-2">Excluir</button>
 	     </div>
             </div>
           </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
 </template>
 
@@ -38,7 +36,7 @@ import axios from "axios";
 export default {
   data() {
     return {
-      products: null,
+      product: null,
       loading: true,
 
     };
@@ -65,10 +63,13 @@ export default {
       this.$router.push({ name: 'login' });
       console.log('User not authenticated');
     }
-    axios.get("http://localhost:8000/api/produtos")
+    axios.get("http://localhost:8000/api/produto/"+ this.$route.params.index)
       .then(response => {
         // Update the products data property with the received data
-        this.products = response.data.data.data;
+
+        this.product = response.data.data;
+	console.log(this.product)
+
 	this.loading = false; // Set loading to false in case of error
       })
       .catch(error => {

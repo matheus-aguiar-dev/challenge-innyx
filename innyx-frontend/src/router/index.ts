@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import LoginPage from '../views/LoginPage.vue'
 import DashBoard from '../views/DashboardPage.vue'
-import Produto from '../views/ProdutoPage.vue'
+import Produtos from '../views/ProdutoPage.vue'
+import Produto from '../views/ProdutoInfo.vue'
 import Categoria from '../views/CategoriaPage.vue'
 
 const routes: Array<RouteRecordRaw> = [
@@ -20,6 +21,11 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/produtos',
     name: 'produtos',
+    component: Produtos
+  },
+  {
+    path: '/produto/:index',
+    name: 'produto',
     component: Produto
   },
   {
