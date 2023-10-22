@@ -1,23 +1,23 @@
 <template>
   <div class="container mt-5">
-    <div v-if="loading" class="text-center">
-      Loading...
-    </div>
+    <spinner v-if="loading" class="text-center">
+      
+    </spinner>
     <div v-else>
-    <div class="mb-4 text-center">
-        <router-link :to="{ name: 'produtocreate' }">
-	  <button class="btn btn-purple">Criar novo produto</button>
-        </router-link>
-    </div>
+      <div class="mb-4 text-center">
+          <router-link :to="{ name: 'produtocreate' }">
+            <button class="btn btn-purple">Criar novo produto</button>
+          </router-link>
+      </div>
       <div class="row">
         <div class="col-md-4" v-for="product in products" :key="product.id">
           <!-- Your product card layout here -->
           <div class="card mb-4">
-            <img :src="product.imagem" class="card-img-top">
+            <img :src="`http://localhost:8000/images/${product.imagem}`" class="card-img-top">
             <div class="card-body">
               <h5 class="card-title">{{ product.nome }}</h5>
               <p class="card-text">{{ product.descricao }}</p>
-              <p class="card-text">Price: {{ product.preco }}</p>
+              <p class="card-text">Preço: R$ {{ product.preco }}</p>
               <!-- Add more product details as needed -->
 	      <div class="text-center">
 	      <router-link :to="{ name: 'produto', params: { index: product.id } }">
@@ -31,6 +31,12 @@
             </div>
           </div>
         </div>
+
+      </div>
+      <div class="row justify-content-center">
+	      <div class="col-12 text-center">
+		      <pagination :total-pages="totalPages" :current-page="currentPage" @page-change="handlePageChange" />
+	      </div>
       </div>
     </div>
   </div>
@@ -39,14 +45,23 @@
 
 <script>
 import axios from "axios";
+import Pagination from '../components/Pagination.vue';
+import Spinner from '@/components/Spinner.vue'; // Adjust the path based on your project structure
+
 
 export default {
   data() {
     return {
       products: null,
+      currentPage: 1, // Current page number
+      totalPages: 1, // Total number of pages
       loading: true,
 
     };
+  },
+  components: {
+    Pagination,
+    Spinner
   },
   created() {
     const token = localStorage.getItem('token');
@@ -70,16 +85,7 @@ export default {
       this.$router.push({ name: 'login' });
       console.log('User not authenticated');
     }
-    axios.get("http://localhost:8000/api/produtos")
-      .then(response => {
-        // Update the products data property with the received data
-        this.products = response.data.data.data;
-	this.loading = false; // Set loading to false in case of error
-      })
-      .catch(error => {
-        console.error("Error fetching products:", error);
-	this.loading = false; // Set loading to false in case of error==
-      });
+        this.fetchProducts(this.currentPage);
   },
   methods: {
    async deleteProduct(productId) {
@@ -92,7 +98,26 @@ export default {
          console.error('Error deleting product:', error);
       }
    },
-   // ... other methods ...
+   handlePageChange(page) {
+	   // Update the current page property with the selected page number
+	   this.currentPage = page;
+	   // Fetch products for the selected page
+	   this.fetchProducts(page);
+
+   },
+   async fetchProducts(page) {
+      try {
+        // Make API request with the selected page number
+        const response = await axios.get(`http://localhost:8000/api/produtos/?page=${page}`);
+        // Update the products data property with the received data
+        this.products = response.data.data.data;
+        this.totalPages = response.data.data.last_page;
+	console.log(this.products)
+	this.loading=false
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    },
 },
 };
 </script>

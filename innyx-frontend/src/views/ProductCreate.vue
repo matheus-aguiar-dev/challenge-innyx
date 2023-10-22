@@ -19,7 +19,11 @@
       </div>
       <div class="mb-3">
         <label for="categoria" class="form-label">Categoria:</label>
-        <input type="text" class="form-control" v-model="form.categoria_id" required>
+        <label for="categoria" class="form-label">Categoria:</label>
+	<select class="form-select" v-model="form.categoria_id" required>
+		<option value="" disabled>Selecione uma Categoria</option>
+		<option v-for="category in categories" :value="category.id" :key="category.id">{{ category.nome }}</option>
+	</select>
       </div>
       <div class="mb-3">
         <label for="imagem" class="form-label">Imagem:</label>
@@ -27,6 +31,7 @@
       </div>
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
+    <pagination :total-pages="totalPages" :current-page="currentPage" @page-change="handlePageChange" />
   </div>
 </template>
 
@@ -41,15 +46,26 @@ export default {
         preco: null,
         data_validade: null,
         categoria_id: null,
-	imagem: null // Add this property for the image file
-      }
+	imagem: null, // Add this property for the image file
+      },
+      categories: [], // Store categories here
     };
   },
    created() {
     const token = localStorage.getItem('token');
     axios.defaults.headers.common['Authorization'] = token;
+    this.fetchCategories();
   },
     methods: {
+        async fetchCategories() {
+      try {
+        const response = await axios.get("http://localhost:8000/api/categories");
+        this.categories = response.data.data;
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    },
+
     handleFileUpload(event) {
 	    const file = event.target.files[0];
 	    this.form.imagem = file;
@@ -76,6 +92,7 @@ export default {
         );
 
         console.log("Product created successfully", response.data);
+	this.$router.push(`/produtos`);
         // Optionally, you can redirect the user to another page after successful submission.
       } catch (error) {
         console.error("Error creating product:", error);

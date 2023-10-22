@@ -7,14 +7,14 @@
       <div class="row">
         <div class="col-md-4">
           <div class="card mb-4">
-            <img :src="product.imagem" class="card-img-top">
+            <img :src="img_url" class="card-img-top">
             <div class="card-body">
               <h5 class="card-title">{{ product.nome}}</h5>
               <p class="card-text">id: {{ product.id }}</p>
               <p class="card-text">descrição: {{ product.descricao }}</p>
-              <p class="card-text">:preço {{ product.preco }}</p>
-              <p class="card-text">:data de validade:: {{ product.data_validade }}</p>
-              <p class="card-text">categoria: {{ product.categoria_id}}</p>
+              <p class="card-text">preço {{ product.preco }}</p>
+              <p class="card-text">data de validade: {{ product.data_validade }}</p>
+              <p class="card-text">categoria: {{ product.categoria.nome}}</p>
               <!-- Add more product details as needed -->
 	      <div class="text-center">
       	      <router-link :to="{ name: 'produto', params: { index: product.id } }">
@@ -41,6 +41,7 @@ export default {
   data() {
     return {
       product: null,
+      img_url: null,
       loading: true,
 
     };
@@ -73,6 +74,7 @@ export default {
 
         this.product = response.data.data;
 	console.log(this.product)
+	this.img_url  ="http://localhost:8000/images/" + this.product.imagem
 
 	this.loading = false; // Set loading to false in case of error
       })
