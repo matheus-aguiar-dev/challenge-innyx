@@ -17,9 +17,13 @@
               <p class="card-text">categoria: {{ product.categoria_id}}</p>
               <!-- Add more product details as needed -->
 	      <div class="text-center">
+      	      <router-link :to="{ name: 'produto', params: { index: product.id } }">
 		  <button class="btn btn-purple mb-2">Visualizar</button>
+	      </router-link>
+	      <router-link :to="{ name: 'produtoedit', params: { index: product.id } }">
 		  <button class="btn mx-5 btn-blue mb-2">Editar</button>
-		  <button class="btn btn-red mb-2">Excluir</button>
+	      </router-link>
+	      <button class="btn btn-red mb-2" @click="deleteProduct(product.id)">Excluir</button>
 	     </div>
             </div>
           </div>
@@ -77,6 +81,19 @@ export default {
 	this.loading = false; // Set loading to false in case of error==
       });
   },
+  methods: {
+   async deleteProduct(productId) {
+      try {
+         await axios.delete(`http://localhost:8000/api/produto/${productId}`);
+         console.log('Product deleted successfully');
+         // Reload the page after successful deletion
+	 this.$router.push({ name: 'produtos' });
+      } catch (error) {
+         console.error('Error deleting product:', error);
+      }
+   },
+   // ... other methods ...
+},
 };
 </script>
 

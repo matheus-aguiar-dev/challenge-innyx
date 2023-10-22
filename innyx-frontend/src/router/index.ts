@@ -3,6 +3,8 @@ import LoginPage from '../views/LoginPage.vue'
 import DashBoard from '../views/DashboardPage.vue'
 import Produtos from '../views/ProdutoPage.vue'
 import Produto from '../views/ProdutoInfo.vue'
+import CreateProduto from '../views/ProductCreate.vue'
+import EditProduto from '../views/ProductEdit.vue'
 import Categoria from '../views/CategoriaPage.vue'
 
 const routes: Array<RouteRecordRaw> = [
@@ -27,6 +29,17 @@ const routes: Array<RouteRecordRaw> = [
     path: '/produto/:index',
     name: 'produto',
     component: Produto
+  },
+
+  {
+    path: '/produto/create',
+    name: 'produtocreate',
+    component: CreateProduto
+  },
+  {
+    path: '/produto/edit/:index',
+    name: 'produtoedit',
+    component: EditProduto
   },
   {
     path: '/categorias',

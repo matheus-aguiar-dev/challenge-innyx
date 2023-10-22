@@ -4,6 +4,11 @@
       Loading...
     </div>
     <div v-else>
+    <div class="mb-4 text-center">
+        <router-link :to="{ name: 'produtocreate' }">
+	  <button class="btn btn-purple">Criar novo produto</button>
+        </router-link>
+    </div>
       <div class="row">
         <div class="col-md-4" v-for="product in products" :key="product.id">
           <!-- Your product card layout here -->
@@ -18,10 +23,10 @@
 	      <router-link :to="{ name: 'produto', params: { index: product.id } }">
 		  <button class="btn btn-purple mb-2">Visualizar</button>
 	      </router-link>
-	      <router-link :to="{ name: 'produto', params: { index: product.id } }">
+	      <router-link :to="{ name: 'produtoedit', params: { index: product.id } }">
 		  <button class="btn mx-5 btn-blue mb-2">Editar</button>
 	      </router-link>
-		  <button class="btn btn-red mb-2">Excluir</button>
+	      <button class="btn btn-red mb-2" @click="deleteProduct(product.id)">Excluir</button>
 	     </div>
             </div>
           </div>
@@ -76,6 +81,19 @@ export default {
 	this.loading = false; // Set loading to false in case of error==
       });
   },
+  methods: {
+   async deleteProduct(productId) {
+      try {
+         await axios.delete(`http://localhost:8000/api/produto/${productId}`);
+         console.log('Product deleted successfully');
+         // Reload the page after successful deletion
+         window.location.reload();
+      } catch (error) {
+         console.error('Error deleting product:', error);
+      }
+   },
+   // ... other methods ...
+},
 };
 </script>
 
