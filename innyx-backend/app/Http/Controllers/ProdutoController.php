@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Models\Produto;
+use App\Models\Categoria; 
 
 class ProdutoController extends Controller
 {
 
 	public function show($id)
 	{
-		$product = Produto::find($id);
+		$product = Produto::with('categoria')->find($id);
 
 		if (!$product) {
 			return response()->json(['error' => 'Product not found'], 404);
@@ -20,9 +21,10 @@ class ProdutoController extends Controller
 
 	public function show_all()
 	{
-		$products = Produto::paginate(5); // Paginate the products with 5 items per page
+		$products = Produto::orderBy('id', 'desc')->paginate(5); // Paginate the products with 5 items per page in descending order of id
+		$lastPage = $products->lastPage(); // Get the last page number
+		return response()->json(['data' => $products, 'last_page' => $lastPage], 200);
 
-		return response()->json(['data' => $products], 200);
 	}
 	public function destroy($id)
 	{
