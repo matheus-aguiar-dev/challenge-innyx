@@ -58,13 +58,14 @@ O backend da aplicação será construído utilizando o framework Laravel. As pr
     ```
 O primeiro comando ajusta as permissões do diretório de imagens. O segundo executa as migrações do Laravel e os seeders, populando o banco de dados com dados de teste.
 
-5.Acesse o Aplicativo:
+5. Acesse o Aplicativo:
 
 Abra o navegador e acesse http://localhost:8080. Isso deve levá-lo à página inicial do seu aplicativo.
 
 6. Faça Login com as Credenciais Fornecidas:
 
     Login: admin@innyx.com.br
+    
     Senha: admin
      
     
