@@ -18,7 +18,9 @@ O frontend da aplicação será construído utilizando o framework Vue.js. As pr
 O backend da aplicação será construído utilizando o framework Laravel. As principais funcionalidades que devem ser implementadas no backend incluem:
 
     API para CRUD de Produtos: Implementar uma API RESTful que permita realizar operações de CRUD (Create, Read, Update, Delete) nos produtos. Esta API será consumida pelo frontend Vue.js.
+
     Validações: Implementar validações para garantir que os dados enviados pela aplicação frontend sejam válidos e seguros.
+
     Persistência de Dados: Utilizar um banco de dados para armazenar os dados dos produtos.
 
 ## Tecnologias Utilizadas
