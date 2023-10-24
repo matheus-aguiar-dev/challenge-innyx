@@ -4,7 +4,7 @@
       <a class="navbar-brand" href="/" style="font-family: 'Arial', sans-serif; font-size:50px;">Innyx</a>
     </nav>
     <div v-if="hastoken">
-      <sidebar   @button-exit-clicked="logout" @menuClicked="handleMenuClick" />
+      <sidebar   @button-exit-clicked="logout" @menuClicked="handleMenuClick" v-if='hastoken'/>
       <router-view />
     </div>
     <router-view v-else />

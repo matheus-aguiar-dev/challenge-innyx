@@ -19,7 +19,6 @@
       </div>
       <div class="mb-3">
         <label for="categoria" class="form-label">Categoria:</label>
-        <label for="categoria" class="form-label">Categoria:</label>
 	<select class="form-select" v-model="form.categoria_id" required>
 		<option value="" disabled>Selecione uma Categoria</option>
 		<option v-for="category in categories" :value="category.id" :key="category.id">{{ category.nome }}</option>
@@ -54,6 +53,25 @@ export default {
    created() {
     const token = localStorage.getItem('token');
     axios.defaults.headers.common['Authorization'] = token;
+
+    if (token) {
+      axios.get('http://localhost:8000/api/user')
+        .then(response => {
+          console.log('User data:', response.data);
+          // Continue with your logic, e.g., store user data in Vuex state
+        })
+        .catch(error => {
+          console.log('A problem occurred');
+          // Handle errors, e.g., show an error message to the user
+        })
+        .finally(() => {
+          // Redirect the user to the login page after API request is complete
+        });
+    } else {
+      // Redirect the user to the login page if there is no token
+      this.$router.push({ name: 'login' });
+    }
+
     this.fetchCategories();
   },
     methods: {
