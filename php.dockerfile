@@ -11,14 +11,16 @@ COPY ./innyx-backend .
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 RUN composer install
 
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache 
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/public/images
 
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html \
     && cd /var/www/html \
     && php artisan key:generate \
-    && php artisan config:cache
+    && php artisan config:cache \
+    && php artisan storage:link
 
+RUN chown -R www-data:www-data /var/www/html/public
 
 EXPOSE 9000
 

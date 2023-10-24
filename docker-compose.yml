@@ -22,13 +22,19 @@ services:
       - mysql_db
     networks:
       - mynetwork
+    volumes: 
+      - ./innyx-backend/public:/var/www/html/public
+      - ./innyx-backend/public/images:/var/www/html/public/images
 
   nginx:
     image: nginx:latest
     container_name: nginx
     ports:
       - "8000:80"
+    volumes_from:
+      - laravel-app
     volumes:
+      - ./innyx-backend/public/images:/var/www/html/public/images
       - ./nginx-conf:/etc/nginx/conf.d
     depends_on:
       - laravel-app
@@ -65,3 +71,4 @@ networks:
 
 volumes:
   mysql_data:
+  images:
