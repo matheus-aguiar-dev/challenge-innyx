@@ -1,7 +1,7 @@
 <template> 
 <div>
     <nav class="navbar navbar-expand-lg navbar-dark bg-purple justify-content-center">
-      <a class="navbar-brand" href="/" style="font-family: 'Arial', sans-serif; font-size:60px;">Innyx</a>
+      <a class="navbar-brand" href="/" style="font-family: 'Arial', sans-serif; font-size:50px;">Innyx</a>
     </nav>
     <div v-if="hastoken">
       <sidebar   @button-exit-clicked="logout" @menuClicked="handleMenuClick" />
@@ -67,7 +67,7 @@ background:#d0dcff;
   position: absolute;
   top: 0;
   width: 100vw;
-  height: 80px;
+  height: 100px;
   box-shadow: 6.7px 6.7px 5.3px rgba(0, 0, 0, 0.028),
     22.3px 22.3px 17.9px rgba(0, 0, 0, 0.042),
     100px 100px 80px rgba(0, 0, 0, 0.07);

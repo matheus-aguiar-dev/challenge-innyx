@@ -11,17 +11,12 @@
 	       </span>
 	     <input v-model="searchQuery" type="text" class="form-control" placeholder="Procure...">
 	     <div class="input-group-append">
-	     <router-link :to="{ name: 'produtosearch', query: { query: searchQuery } }">
-	       <button class="btn btn-purple" @click="searchButton">Confirme</button>
+	     <router-link :to="{ name: 'produtosearch', query: { query: searchQuery } }" @click="searchAndReload">
+	       <button class="btn btn-purple">Confirme</button>
 	     </router-link>
 	     </div>
 	   </div>
 	 </div>
-      <div class="mb-4 text-center">
-          <router-link :to="{ name: 'produtocreate' }">
-            <button class="btn btn-purple">Criar novo produto</button>
-          </router-link>
-      </div>
       <div class="row">
         <div class="col-md-4" v-for="product in products" :key="product.id">
           <!-- Your product card layout here -->
@@ -53,31 +48,19 @@
       </div>
     </div>
   </div>
-
 </template>
 
 <script>
-import axios from "axios";
-import Pagination from '../components/Pagination.vue';
-import Spinner from '@/components/Spinner.vue'; // Adjust the path based on your project structure
-
-
+import axios from 'axios';
 export default {
   data() {
     return {
-      products: null,
-      currentPage: 1, // Current page number
-      totalPages: 1, // Total number of pages
-      loading: true,
-      searchQuery: '',
-
+      products: [],  // Store search results here
+      searchQuery:'',
     };
   },
-  components: {
-    Pagination,
-    Spinner
-  },
-  created() {
+  mounted() {
+    const query = this.$route.query.query;
     const token = localStorage.getItem('token');
     axios.defaults.headers.common['Authorization'] = token;
 
@@ -99,46 +82,36 @@ export default {
       this.$router.push({ name: 'login' });
       console.log('User not authenticated');
     }
-        this.fetchProducts(this.currentPage);
+    // Make a request to the backend API using Axios
+    axios.get(`http://localhost:8000/api/produtos/search?query=${query}`)
+      .then(response => {
+        this.products= response.data.data.data;  // Assuming the API response contains search results
+	console.log(this.products.data)
+      })
+      .catch(error => {
+        console.error('Error fetching search results:', error);
+      });
   },
-  methods: {
-   async deleteProduct(productId) {
-      try {
-         await axios.delete(`http://localhost:8000/api/produto/${productId}`);
-         console.log('Product deleted successfully');
-         // Reload the page after successful deletion
-         window.location.reload();
-      } catch (error) {
-         console.error('Error deleting product:', error);
-      }
-   },
-   searchButton() {
-	   console.log(	this.searchQuery)
-   },
-   handlePageChange(page) {
-	   // Update the current page property with the selected page number
-	   this.currentPage = page;
-	   // Fetch products for the selected page
-	   this.fetchProducts(page);
+    methods: {
+    searchAndReload() {
+      // Perform your search logic here
+      // For example, make an API request using Axios
+      
+      // After performing search logic, reload the page
+      this.$router.push({ name: 'produtosearch', query: { query: this.searchQuery } });
+      axios.get(`http://localhost:8000/api/produtos/search?query=${this.searchQuery}`)
+	      .then(response => {
+			      this.products= response.data.data.data;  // Assuming the API response contains search results
+			      console.log(this.products.data)
+			      })
+      .catch(error => {
+		      console.error('Error fetching search results:', error);
+		      });
+    }
+  }
 
-   },
-   async fetchProducts(page) {
-      try {
-        // Make API request with the selected page number
-        const response = await axios.get(`http://localhost:8000/api/produtos/?page=${page}`);
-        // Update the products data property with the received data
-        this.products = response.data.data.data;
-        this.totalPages = response.data.data.last_page;
-	console.log(this.products)
-	this.loading=false
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    },
-},
 };
 </script>
-
 <style scoped>
 .btn-purple {
   background-color: #800080; /* Purple color */
@@ -161,4 +134,5 @@ export default {
   margin-right: 10px; /* Adjust the spacing between the icon and the input field */
 }
 </style>
+
 

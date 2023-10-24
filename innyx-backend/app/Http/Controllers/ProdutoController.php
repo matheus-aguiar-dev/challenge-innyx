@@ -9,7 +9,7 @@ use App\Models\Categoria;
 class ProdutoController extends Controller
 {
 
-	public function show($id)
+	public function index($id)
 	{
 		$product = Produto::with('categoria')->find($id);
 
@@ -18,6 +18,28 @@ class ProdutoController extends Controller
 		}
 		return response()->json(['data' => $product], 200);
 	}
+	public function search (Request $request)
+	{
+		// Get search parameters from query parameters (GET request)
+		$searchTerm = $request->query('query');
+
+		// Query products with search conditions
+		$query = Produto::orderBy('id', 'desc');
+
+		if ($searchTerm) {
+			$query->where(function ($query) use ($searchTerm) {
+				$query->where('nome', 'like', '%' . $searchTerm . '%')
+	  ->orWhere('descricao', 'like', '%' . $searchTerm . '%');
+			});
+		}
+
+		// Paginate the results
+		$products = $query->paginate(5);
+		$lastPage = $products->lastPage(); // Get the last page number
+
+		return response()->json(['data' => $products, 'last_page' => $lastPage], 200);
+	}
+
 
 	public function show_all()
 	{
@@ -26,6 +48,7 @@ class ProdutoController extends Controller
 		return response()->json(['data' => $products, 'last_page' => $lastPage], 200);
 
 	}
+
 	public function destroy($id)
 	{
 		// Find the product by ID

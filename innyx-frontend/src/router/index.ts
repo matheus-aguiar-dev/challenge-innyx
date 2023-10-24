@@ -8,6 +8,7 @@ import EditProduto from '../views/ProductEdit.vue';
 import Categoria from '../views/CategoriaPage.vue';
 import EditCategoria from '../views/CategoriaEdit.vue'; // Fixed typo here
 import CreateCategoria from '../views/CategoriaCreate.vue'; // Fixed typo here
+import ProdutoSearch from '../views/ProdutoSearch.vue'; // Import your component
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -41,12 +42,17 @@ const routes: Array<RouteRecordRaw> = [
     component: EditProduto
   },
   {
+    path: '/produto/search',
+    name: 'produtosearch',
+    component: ProdutoSearch,
+  },
+  {
     path: '/categorias',
     name: 'categorias',
     component: Categoria
   },
   {
-    path: '/categoria/edit/:index', // Added missing curly braces for the route object
+    path: '/categoria/edit/:index', 
     name: 'categoriaEdit',
     component: EditCategoria
   },
